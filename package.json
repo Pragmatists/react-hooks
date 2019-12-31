@@ -1,0 +1,32 @@
+{
+  "name": "react-hooks",
+  "version": "1.0.0",
+  "repository": "git@github.com:Pragmatists/react-hooks.git",
+  "author": "jakubfedoruk <jakub.fedoruk@pragmatists.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "roots": [
+      "./src"
+    ],
+    "setupFilesAfterEnv": [
+      "./src/setupTests.js"
+    ]
+  },
+  "devDependencies": {
+    "@babel/polyfill": "7.7.0",
+    "@babel/preset-env": "7.7.6",
+    "@babel/preset-react": "7.7.4",
+    "@babel/plugin-proposal-class-properties": "7.7.4",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "jest": "24.9.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "react": "^16.12.0",
+    "react-dom": "16.12.0"
+  }
+}
