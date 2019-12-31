@@ -1,35 +1,27 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import debounce from 'lodash/debounce'
-import { isNil } from 'lodash'
 
-export const withDebounce = (Component) => {
-  return class WithDebounce extends React.Component {
-    state = { value : undefined}
-    
-    handleDebounceChange = (value) => {
-      this.props.onChange(value)
+export const withDebounce = (Component, debounceTime = 300) => props => {
+  const [value, setValue] = useState(props.value || '')
+  const debouncedOnChange = useCallback(debounce(props.onChange, debounceTime), [props.onChange])
+
+  const onChange = value => {
+    setValue(value)
+    debouncedOnChange(value)
+  }
+
+  const onBlur = event => {
+    if (debouncedOnChange.flush !== undefined) {
+      debouncedOnChange.flush()
     }
-
-    debouncedOnChange = debounce(this.handleDebounceChange, 100)
-
-    onChange = (value) => {
-      this.setState(() => ({ value }), () => this.debouncedOnChange(this.state.value))
-    }
-
-    onBlur = (event) => {
-      if (this.debouncedOnChange.flush !== undefined) {
-        this.debouncedOnChange.flush()
-      }
-      if (this.props.onBlur) {
-        this.props.onBlur(event)
-      }
-    }
-
-    render () {
-      const value = isNil(this.state.value) ? '' : this.state.value
-      return (
-        <Component {...this.props} value={value} onChange={this.onChange} onBlur={this.onBlur} />
-      )
+    if (props.onBlur) {
+      props.onBlur(event)
     }
   }
+
+  useEffect(() => setValue(props.value || ''), [props.value])
+
+  return (
+    <Component {...props} value={value} onChange={onChange} onBlur={onBlur} />
+  )
 }
