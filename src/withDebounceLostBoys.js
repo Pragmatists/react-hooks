@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import debounce from 'lodash/debounce'
+import isFunction from 'lodash/isFunction'
 
 export const withDebounce = (Component, debounceTime = 300) => (props) => {
   const [value, setValue] = useState(props.value || '')
@@ -11,10 +12,10 @@ export const withDebounce = (Component, debounceTime = 300) => (props) => {
   }, [debouncedOnChange])
 
   const onBlur = useCallback((event) => {
-    if (debouncedOnChange.flush !== undefined) {
+    if (isFunction(debouncedOnChange.flush)) {
       debouncedOnChange.flush()
     }
-    if (props.onBlur) {
+    if (isFunction(props.onBlur)) {
       props.onBlur(event)
     }
   }, [debouncedOnChange, props.onBlur])
