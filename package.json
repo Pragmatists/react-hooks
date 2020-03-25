@@ -5,6 +5,7 @@
   "author": "jakubfedoruk <jakub.fedoruk@pragmatists.com>",
   "license": "MIT",
   "scripts": {
+    "storybook": "start-storybook",
     "test": "jest"
   },
   "jest": {
@@ -16,15 +17,18 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "7.7.4",
     "@babel/polyfill": "7.7.0",
     "@babel/preset-env": "7.7.6",
     "@babel/preset-react": "7.7.4",
-    "@babel/plugin-proposal-class-properties": "7.7.4",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "jest": "24.9.0"
   },
   "dependencies": {
+    "@babel/core": "^7.9.0",
+    "@storybook/react": "^5.3.17",
+    "babel-loader": "^8.1.0",
     "lodash": "^4.17.15",
     "react": "^16.12.0",
     "react-dom": "16.12.0"

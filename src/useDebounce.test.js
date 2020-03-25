@@ -1,26 +1,9 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import { TextInput } from './TextInput'
 import { useDebounce } from './useDebounce'
+import { DebouncedInput } from './DebouncedInput'
 
 describe('useDebounce', () => {
-  const DebouncedInput = ({ onBlur, onChange, value, debounceTime }, ...props) => {
-    const { debouncedValue, handleOnChange, handleOnBlur } = useDebounce({
-      onBlur,
-      onChange,
-      value
-    }, debounceTime)
-
-    return (
-      <TextInput
-        onBlur={handleOnBlur}
-        onChange={handleOnChange}
-        value={debouncedValue}
-        {...props}
-      />
-    )
-  }
-
   it('should call onChange callback with debounce', done => {
     const onChangeCallback = jest.fn()
 
