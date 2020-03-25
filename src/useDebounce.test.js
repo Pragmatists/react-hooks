@@ -1,16 +1,30 @@
 import React from 'react'
-import { withDebounce } from './withDebounceLostBoys'
 import { mount } from 'enzyme'
 import { TextInput } from './TextInput'
+import { useDebounce } from './useDebounce'
 
-describe('withDebounce', () => {
-  const DebouncedInput = withDebounce((props) => <TextInput {...props} />)
-  
-  it('should call onChange callback with debounce', (done) => {
+describe('useDebounce', () => {
+  const DebouncedInput = ({ onBlur, onChange, value, debounceTime }, ...props) => {
+    const { debouncedValue, handleOnChange, handleOnBlur } = useDebounce({
+      onBlur,
+      onChange,
+      value
+    }, debounceTime)
+
+    return (
+      <TextInput
+        onBlur={handleOnBlur}
+        onChange={handleOnChange}
+        value={debouncedValue}
+        {...props}
+      />
+    )
+  }
+
+  it('should call onChange callback with debounce', done => {
     const onChangeCallback = jest.fn()
-    const DebouncedInput = withDebounce((props) => <TextInput {...props} />, 1)
 
-    const component = mount(<DebouncedInput onChange={onChangeCallback} />)
+    const component = mount(<DebouncedInput onChange={onChangeCallback} debounceTime={1} />)
 
     component.find('input').simulate('change', { target: { value: 's' } })
     component.find('input').simulate('change', { target: { value: 'so' } })
@@ -24,9 +38,8 @@ describe('withDebounce', () => {
     }, 101)
   })
 
-  it('should not call onChange callback sooner than debounce time', (done) => {
+  it('should not call onChange callback sooner than debounce time', done => {
     const onChangeCallback = jest.fn()
-    const DebouncedInput = withDebounce((props) => <TextInput {...props} />, 200)
 
     const component = mount(<DebouncedInput onChange={onChangeCallback} />)
 
@@ -59,7 +72,9 @@ describe('withDebounce', () => {
   it('should not call onChange callback on blur if text not changed', () => {
     const onChangeCallback = jest.fn()
 
-    const component = mount(<DebouncedInput type='text' onChange={onChangeCallback} />)
+    const component = mount(
+      <DebouncedInput type="text" onChange={onChangeCallback} />
+    )
 
     component.simulate('blur')
 
@@ -70,7 +85,9 @@ describe('withDebounce', () => {
     const blurEvent = { x: 'y' }
     const onBlur = jest.fn()
     const onChange = jest.fn()
-    const component = mount(<DebouncedInput onChange={onChange} onBlur={onBlur} />)
+    const component = mount(
+      <DebouncedInput onChange={onChange} onBlur={onBlur} />
+    )
 
     component.find('input').simulate('blur', blurEvent)
 
