@@ -2,7 +2,7 @@ import React from 'react'
 import debounce from 'lodash/debounce'
 import { isNil } from 'lodash'
 
-export const withDebounce = (Component) => {
+export const withDebounce = (Component, debounceTime = 100) => {
   return class WithDebounce extends React.Component {
     constructor (props) {
       super(props)
@@ -16,7 +16,7 @@ export const withDebounce = (Component) => {
       this.props.onChange(value)
     }
 
-    debouncedOnChange = debounce(this.handleDebounceChange, 100)
+    debouncedOnChange = debounce(this.handleDebounceChange, debounceTime)
 
     static getDerivedStateFromProps (nextProps, currentState) {
       if (nextProps.value && (nextProps.value !== currentState.value)) {
